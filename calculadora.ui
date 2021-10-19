@@ -279,7 +279,7 @@ background-color: rgb(255, 255, 255);
    <widget class="QPushButton" name="borrartodo">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>140</x>
       <y>60</y>
       <width>51</width>
       <height>41</height>
@@ -292,14 +292,14 @@ background-color: rgb(255, 255, 255);
    <widget class="QPushButton" name="borrar">
     <property name="geometry">
      <rect>
-      <x>140</x>
+      <x>80</x>
       <y>60</y>
       <width>51</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>CA</string>
+     <string>CE</string>
     </property>
    </widget>
    <widget class="QPushButton" name="division">
@@ -351,6 +351,40 @@ background-color: rgb(255, 255, 255);
     </property>
     <property name="text">
      <string>√</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="boton_coma">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>310</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font-size: 20px
+</string>
+    </property>
+    <property name="text">
+     <string>,</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="borrardigito">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>60</y>
+      <width>51</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset>
+      <normaloff>ret.png</normaloff>ret.png</iconset>
     </property>
    </widget>
   </widget>
