@@ -165,7 +165,7 @@ class MiVentana(QMainWindow):
                     self.operacion=''
             except :
                 
-                    self.Calculo.setText("No se puede dividir entre cero") 
+                    self.Calculo.setText("No se puede dividir entre cero ") 
   
                 
         if(self.operacion == "potencia"):
@@ -181,7 +181,7 @@ class MiVentana(QMainWindow):
                     self.operador=res
                     self.operacion=''
             except :
-                    self.Calculo.setText("Error") 
+                    self.Calculo.setText("Error -") 
 
 
         if(self.operacion == "raiz"):
@@ -198,7 +198,7 @@ class MiVentana(QMainWindow):
                     self.operacion=''
             except :
                 
-                    self.Calculo.setText("Error") 
+                    self.Calculo.setText("Error -") 
 
     def eliminarTodo(self):
         self.Calculo.clear()
