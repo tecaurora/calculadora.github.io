@@ -1,14 +1,17 @@
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5 import uic
 from math import *
+import re
+import locale 
+locale.setlocale( locale.LC_ALL, 'en_US.UTF-8' )
 
 class MiVentana(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi("calculadora.ui", self)
-        #Seteamos los operadores
+        #Seteamos los operadores y varibles que nos sirven de semaforo
         self.operador = ""
-        #self.operador2 = ""
+        self.coma = "0"
         self.ban = "0"
         #Seteamos el tipo de operación a realizar
         self.operacion = ""
@@ -120,39 +123,25 @@ class MiVentana(QMainWindow):
      
 
     def resultado(self):
-        #Se procede a la operación dependiendo del tipo y siempre y cuando este determinado el primer operador.
+        
         self.ban=1
-        if(self.operacion == "suma"):
-            operador = eval(self.Calculo.text())
+        if(self.operacion == "suma" or self.operacion == "resta" or self.operacion == "producto"):
+            operador=self.Calculo.text()
+            operador = re.sub('\.','',operador)
+            operador = re.sub('\,','.',operador)
+            operador = eval(operador)
             res=str(operador)
+            res = re.sub('\.',',',res)
+            res=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', res))  
             operador = self.Calculo.text()
             operador+= "=" 
             operador+=res 
+             
             self.Calculo.setText(operador)
             self.operador=res
             self.operacion=''        
 
-        if(self.operacion == "resta"):
-            operador = eval(self.Calculo.text())
-            res=str(operador)
-            operador = self.Calculo.text()
-            operador+= "=" 
-            operador+=res 
-            self.Calculo.setText(operador)
-            self.operador=res
-            self.operacion=''   
-
-
-        if(self.operacion == "producto"):
-            operador = eval(self.Calculo.text())
-            res=str(operador)
-            operador = self.Calculo.text()
-            operador+= "=" 
-            operador+=res 
-            self.Calculo.setText(operador)
-            self.operador=res
-            self.operacion='' 
-
+        
         if(self.operacion == "division"):
             operador =self.Calculo.text()
             try:
@@ -205,10 +194,16 @@ class MiVentana(QMainWindow):
         self.operador=''
         self.operacion=''
         self.ban="0"
+        self.coma="0"
 
     def borrarDigitos(self):
         valor=self.Calculo.text()
-        self.Calculo.setText(valor[:len(valor)-1])
+        valor = re.sub('\.','',valor)
+        operador=valor[:len(valor)-1]
+        operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))   
+        self.Calculo.setText(operador)
+        
+        
 
     def borrarOperador(self):
         if(self.operacion == ""):
@@ -226,130 +221,234 @@ class MiVentana(QMainWindow):
         if(self.ban==1):
            #self.Calculo.setText("")
            operador=self.Calculo.text()  
-           operador+= "1"   
+           operador+= "1"  
+           operador = re.sub('\.','',operador)
+           if(self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+           else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
            self.Calculo.setText(operador)
            self.ban=0
         else:
            operador=self.Calculo.text()  
-           operador+= "1"   
+           operador+= "1"  
+           operador = re.sub('\.','',operador)
+           if(self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+           else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))
            self.Calculo.setText(operador)
 
     def click_2(self): 
         if(self.ban==1):
-           # self.Calculo.setText("")
-            operador=self.Calculo.text()  
-            operador+= "2"   
-            self.Calculo.setText(operador)
-            self.ban=0
+           #self.Calculo.setText("")
+           operador=self.Calculo.text()  
+           operador+= "2"  
+           operador = re.sub('\.','',operador)
+           if(self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+           else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador)) 
+           self.Calculo.setText(operador)
+           self.ban=0
         else:
-            operador=self.Calculo.text()  
-            operador+= "2"   
-            self.Calculo.setText(operador) 
+           operador=self.Calculo.text()  
+           operador+= "2"   
+           operador = re.sub('\.','',operador)
+           if(self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+           else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))
+           self.Calculo.setText(operador) 
     
     def click_3(self): 
         if(self.ban==1):
            #  self.Calculo.setText("")
-            operador=self.Calculo.text()  
-            operador+= "3"   
-            self.Calculo.setText(operador)
-            self.ban=0
+           operador=self.Calculo.text()  
+           operador+= "3" 
+           operador = re.sub('\.','',operador)
+           if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+           else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))  
+           self.Calculo.setText(operador)
+           self.ban=0
         else:
-            operador=self.Calculo.text()  
-            operador+= "3"   
-            self.Calculo.setText(operador)
+           operador=self.Calculo.text()  
+           operador+= "3"   
+           operador = re.sub('\.','',operador)
+           if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+           else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))
+           self.Calculo.setText(operador)
 
     def click_4(self): 
         if(self.ban==1):
-           # self.Calculo.setText("")
-            operador=self.Calculo.text()  
-            operador+= "4"   
-            self.Calculo.setText(operador)
-            self.ban=0
+           #self.Calculo.setText("")
+           operador=self.Calculo.text()  
+           operador+= "4" 
+           operador = re.sub('\.','',operador)
+           if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+           else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))  
+           self.Calculo.setText(operador)
+           self.ban=0
         else:
-            operador=self.Calculo.text()  
-            operador+= "4"   
-            self.Calculo.setText(operador)
+           operador=self.Calculo.text()  
+           operador+= "4" 
+           operador = re.sub('\.','',operador)
+           if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+           else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))  
+           self.Calculo.setText(operador)
     
     def click_5(self): 
         if(self.ban==1):
             #self.Calculo.setText("")
             operador=self.Calculo.text()  
             operador+= "5"   
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))
             self.Calculo.setText(operador)
             self.ban=0
         else:
             operador=self.Calculo.text()  
-            operador+= "5"   
+            operador+= "5"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
             self.Calculo.setText(operador)
     
     def click_6(self): 
         if(self.ban==1):
            # self.Calculo.setText("")
             operador=self.Calculo.text()  
-            operador+= "6"   
+            operador+= "6" 
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))  
             self.Calculo.setText(operador)
             self.ban=0
         else:
             operador=self.Calculo.text()  
-            operador+= "6"   
+            operador+= "6"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
             self.Calculo.setText(operador)
     
     def click_7(self): 
         if(self.ban==1):
           #  self.Calculo.setText("")
             operador=self.Calculo.text()  
-            operador+= "7"   
+            operador+= "7"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
             self.Calculo.setText(operador)
             self.ban=0
         else:
             operador=self.Calculo.text()  
-            operador+= "7"   
+            operador+= "7"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
             self.Calculo.setText(operador)
     
     def click_8(self): 
         if(self.ban==1):
            # self.Calculo.setText("")
             operador=self.Calculo.text()  
-            operador+= "8"   
+            operador+= "8"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
             self.Calculo.setText(operador)
             self.ban=0
         else:
             operador=self.Calculo.text()  
-            operador+= "8"   
+            operador+= "8"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
+                     
             self.Calculo.setText(operador)
     
     def click_9(self): 
         if(self.ban==1):
           #  self.Calculo.setText("")
             operador=self.Calculo.text()  
-            operador+= "9"   
+            operador+= "9"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
             self.Calculo.setText(operador)
             self.ban=0
         else:
             operador=self.Calculo.text()  
-            operador+= "9"   
+            operador+= "9"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
             self.Calculo.setText(operador)
     
     def click_0(self): 
         if(self.ban==1):
           #  self.Calculo.setText("")
             operador=self.Calculo.text()  
-            operador+= "0"   
+            operador+= "0"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
             self.Calculo.setText(operador)
             self.ban=0
         else:
             operador=self.Calculo.text()  
-            operador+= "0"   
+            operador+= "0"
+            operador = re.sub('\.','',operador)
+            if (self.coma=="0"):
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+$)', r'.', operador))
+            else:
+                operador=(re.sub(r'(?<!^)(?=(\d{3})+,)', r'.', operador))   
             self.Calculo.setText(operador)
 
     def click_coma(self): 
         operador=self.Calculo.text()  
+        self.coma=1
         if(operador==''):
-            operador+= "0."   
-            self.Calculo.setText(operador)   
+            operador+= "0,"   
+            self.Calculo.setText(operador)
+           # operador = re.sub('\,','.',operador)   
         else:
-            operador+= "."   
-            self.Calculo.setText(operador)         
+            operador+= ","   
+            self.Calculo.setText(operador)     
+           # operador = re.sub('\,','.',operador)    
 
 app = QApplication([])
 win = MiVentana()
