@@ -1,6 +1,6 @@
 # tecaurora.calculadora.github.io
 
-tecaurora.calculadora.github.io
+
 Integrantes del Grupo
 
 Aurora Lobos Julio Silva Gustavo Sanchez
